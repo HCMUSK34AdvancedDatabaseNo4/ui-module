@@ -2,41 +2,15 @@
 
 .payment-container {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 0 auto;
+  padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
-.payment-summary {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-.order-items {
-  margin: 1rem 0;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.order-total {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 2px solid #dee2e6;
-  display: flex;
-  justify-content: space-between;
-}
-
 .payment-form {
   background: white;
-  padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

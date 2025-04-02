@@ -56,9 +56,6 @@ export const cartSlice = createSlice({
     emptyCart: (state) => {
       return { ...state, cartItems: [] };
     },
-    checkOut: (state, action: PayloadAction<boolean>) => {
-      return { ...state, checkOut: action.payload };
-    },
   },
 });
 
@@ -66,7 +63,6 @@ export const {
   addToCart,
   removeFromCart,
   setCartState,
-  checkOut,
   reduceFromCart,
   emptyCart,
 } = cartSlice.actions;

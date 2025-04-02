@@ -27,7 +27,6 @@ import AllCategories from "./pages/customer/AllCategories";
 import SingleCategory from "./pages/customer/SingleCategory";
 import Wishlist from "./pages/customer/Wishlist";
 import Profile from "./pages/customer/Profile";
-import Order from "./pages/customer/Order";
 
 // Admin Pages
 import Landing from "./pages/customer/Landing";
@@ -66,7 +65,6 @@ const customerRoutes = [
 const protectedCustomerRoutes = [
     {path: "/wishlist", element: <Wishlist/>},
     {path: "/account", element: <Profile/>},
-    {path: "/orders", element: <Order/>},
 ];
 
 const adminRoutes = [
