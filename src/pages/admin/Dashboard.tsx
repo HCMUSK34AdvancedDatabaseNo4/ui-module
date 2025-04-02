@@ -1,9 +1,6 @@
 import Sidebar from "../../components/Sidebar.tsx";
-import { BsSearch } from "react-icons/bs";
-import { FaRegBell } from "react-icons/fa";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import {BiMaleFemale} from 'react-icons/bi';
-import USER_FALLBACK_IMAGE from "../../assets/userpic.png";
 import data from '../../assets/data.json';
 import {BarChart, DoughnutChart} from "../../components/Charts.tsx";
 import DashboardTable from "../../components/DashboardTable.tsx";
@@ -62,12 +59,6 @@ const Dashboard = () => {
     <div className="admin_container">
       <Sidebar />
       <main className="dashboard">
-        <div className="bar">
-          <BsSearch />
-          <input type="text" placeholder="Search..." />
-          <FaRegBell />
-          <img src={USER_FALLBACK_IMAGE} alt="User" />
-        </div>
         <section className="widget_container">
           <WidgetItem
             percent={40}
