@@ -12,9 +12,10 @@ const AllCategories: FC = () => {
 
   useEffect(() => {
     const fetchCategories = () => {
-      fetch("https://dummyjson.com/products/categories")
+      fetch("https://www.productservice.somee.com/api/Category")
         .then((res) => res.json())
         .then((data) => {
+            console.log(data);
           dispatch(addCategories(data));
         });
     };
@@ -28,12 +29,12 @@ const AllCategories: FC = () => {
         {allCategories &&
           allCategories.map((category) => (
             <div
-              key={category.slug}
+              key={category.id}
               className="bg-gray-100 dark:bg-slate-600 dark:text-white px-4 py-4 font-karla mr-2 mb-2"
             >
-              <div className="text-lg">{category.name}</div>
+              <div className="text-lg">{category.categoryName}</div>
               <Link
-                to={{ pathname: `/categories/${category.slug}` }}
+                to={{ pathname: `/categories/${category.id}` }}
                 className="hover:underline text-blue-500"
               >
                 View products

@@ -16,26 +16,22 @@ import useDiscount from "../hooks/useDiscount";
 const CartRow: FC<CartItem> = ({
   id,
   thumbnail,
-  title,
+  productName,
   price,
   quantity,
-  rating,
   category,
-  discountPercentage = 0,
+    supplierCode
 }) => {
   const dispatch = useAppDispatch();
-  const result = useDiscount({ price, discount: discountPercentage });
+  const result = useDiscount({ price, discount: 0 });
 
   return (
     <div className="grid grid-cols-7 gap-3 border items-center">
       <img src={thumbnail} alt="thumbnail" className="h-20 col-span-2" />
       <div className="col-span-3">
-        <h3 className="font-bold leading-4">{title}</h3>
+        <h3 className="font-bold leading-4">{productName}</h3>
         <div className="flex space-x-2 items-center">
           <h3 className="font-semibold">${result.toFixed(2)}</h3>
-          {discountPercentage !== 0 && (
-            <span className="text-xs">-{discountPercentage}%</span>
-          )}
         </div>
 
         <div className="flex items-center space-x-1">
@@ -52,12 +48,12 @@ const CartRow: FC<CartItem> = ({
               dispatch(
                 addToCart({
                   id,
-                  title,
+                    productName,
                   price,
                   quantity,
                   thumbnail,
-                  rating,
                   category,
+                supplierCode,
                 })
               )
             }

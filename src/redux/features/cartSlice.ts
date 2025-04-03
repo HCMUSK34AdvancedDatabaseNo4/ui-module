@@ -4,6 +4,7 @@ import { CartSlice } from "../../models/CartSlice";
 
 const initialState: CartSlice = {
   cartOpen: false,
+  checkOut: false,
   cartItems: [],
 };
 

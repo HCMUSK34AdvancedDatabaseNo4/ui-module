@@ -6,18 +6,23 @@ import ProductCard from "../../components/ProductCard.tsx";
 const SingleCategory: FC = () => {
   const { slug } = useParams();
   const [productList, setProductList] = useState<Product[]>([]);
+  const [categoryName, setCategoryName] = useState<string>("");
 
   useEffect(() => {
-    const fetchProducts = () => {
-      fetch(`https://dummyjson.com/products/category/${slug}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const { products } = data;
-          setProductList(products);
-        });
+    const fetchCategoryData = async () => {
+      try {
+        const category = (await fetch(`https://www.productservice.somee.com/api/Category/${slug}`)).json();
+        const categoryName = (await category).categoryName;
+        setCategoryName(categoryName);
+        const encodedCategoryName = encodeURIComponent(categoryName || "");
+        const products = (await fetch(`https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=10&Category=${encodedCategoryName}`)).json();
+        setProductList(await products);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
     };
 
-    fetchProducts();
+    fetchCategoryData();
   }, [slug]);
 
   return (
@@ -25,7 +30,7 @@ const SingleCategory: FC = () => {
       <div className="flex items-center space-x-2 text-lg dark:text-white">
         <span>Categories</span>
         <span> {">"} </span>
-        <span className="font-bold">{slug}</span>
+        <span className="font-bold">{categoryName}</span>
       </div>
       <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 my-2">
         {productList?.map((product) => (

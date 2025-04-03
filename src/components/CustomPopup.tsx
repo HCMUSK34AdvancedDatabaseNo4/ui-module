@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   MdFavoriteBorder,
-  MdOutlineAccountCircle,
+  MdOutlineAccountCircle, MdOutlineContactPage,
   MdOutlineLogout,
 } from "react-icons/md";
 import { doLogout } from "../redux/features/authSlice";
@@ -42,34 +42,46 @@ const CustomPopup: FC = () => {
         >
           <table>
             <tbody>
-              <tr>
-                <td className="text-center">
-                  <MdOutlineAccountCircle />
-                </td>
-                <td className="hover:underline cursor-pointer text-lg pl-2">
-                  <Link to="/account" onClick={hidePopup}>
-                    Account
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="text-center">
-                  <MdFavoriteBorder />
-                </td>
-                <td
+            <tr>
+              <td className="text-center">
+                <MdOutlineAccountCircle/>
+              </td>
+              <td className="hover:underline cursor-pointer text-lg pl-2">
+                <Link to="/account" onClick={hidePopup}>
+                  Account
+                </Link>
+              </td>
+            </tr>
+            <tr>
+              <td className="text-center">
+                <MdFavoriteBorder/>
+              </td>
+              <td
                   className="hover:underline cursor-pointer text-lg pl-2"
                   data-test="wishlist-container"
-                >
-                  <Link to="/wishlist" onClick={hidePopup}>
-                    Wishlist
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="text-center">
-                  <MdOutlineLogout />
-                </td>
-                <td
+              >
+                <Link to="/wishlist" onClick={hidePopup}>
+                  Wishlist
+                </Link>
+              </td>
+            </tr>
+            <tr>
+              <td className="text-center">
+                <MdOutlineContactPage/>
+              </td>
+              <td
+                  className="hover:underline cursor-pointer text-lg pl-2"
+              >
+                <Link to="/admin" onClick={hidePopup}>
+                  Admin
+                </Link>
+              </td>
+            </tr>
+            <tr>
+              <td className="text-center">
+                <MdOutlineLogout/>
+              </td>
+              <td
                   className="hover:underline cursor-pointer text-lg pl-2"
                   onClick={handleLogout}
                   data-test="logout-btn"
@@ -80,7 +92,7 @@ const CustomPopup: FC = () => {
             </tbody>
           </table>
         </div>
-      )}
+        )}
     </div>
   );
 };

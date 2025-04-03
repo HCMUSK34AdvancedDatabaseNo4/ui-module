@@ -13,10 +13,11 @@ const AllProducts: FC = () => {
   );
 
   useEffect(() => {
-    const fetchProducts = () => {
-      fetch("https://dummyjson.com/products?limit=500")
+    const fetchProducts = (pageNumber: number = 1, pageSize: number = 10) => {
+      fetch(`https://www.productservice.somee.com/api/Product/user?PageNumber=${pageNumber}&Size=${pageSize}`)
         .then((res) => res.json())
-        .then(({ products }) => {
+        .then((products) => {
+          console.log(products);
           dispatch(addProducts(products));
         });
     };
