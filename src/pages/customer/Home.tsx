@@ -16,7 +16,7 @@ const Home: FC = () => {
 
     useEffect(() => {
         const fetchProducts = () => {
-            fetch("https://www.productservice.somee.com/api/Product/user?PageNumber=20&Size=24")
+            fetch("https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=24")
                 .then((res) => res.json())
                 .then((products) => {
                     const productList: Product[] = [];
