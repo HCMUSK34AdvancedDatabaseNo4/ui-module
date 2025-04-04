@@ -57,7 +57,9 @@ const CategoryItem = ({ color, value, heading }: CategoryItem) => (
 const Dashboard = () => {
   return (
     <div className="admin_container">
-      <Sidebar />
+      <div className="sticky side_admin_container">
+          <Sidebar/>
+      </div>
       <main className="dashboard">
         <section className="widget_container">
           <WidgetItem

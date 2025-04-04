@@ -159,7 +159,6 @@ const Sidebar = () => {
       <DivOne location={location} />
       <DivTwo location={location} />
       <DivThree location={location} />
-
       {phoneActive && (
           <button id="close_sidebar" onClick={() => setShowModal(false)}>
             Close

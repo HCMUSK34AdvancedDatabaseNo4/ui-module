@@ -85,7 +85,7 @@ const NewProduct = () => {
     <div className="admin_container">
       <Sidebar />
       <main className="product_management">
-        <article>
+        <article className="content-center">
           <form onSubmit={handleSubmit}>
             <h2>New Product</h2>
             <div className="form-group">

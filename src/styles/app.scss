@@ -4,77 +4,133 @@
 @import "charts";
 @import "dashboard_apps";
 @import "media_queries";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 a {
   text-decoration: none;
   color: black;
 }
+
 .red {
   color: red;
 }
+
 .purple {
   color: rgb(47, 0, 255);
 }
+
 .green {
   color: rgb(0, 195, 0);
 }
 
-.landing_page{
+.landing_page {
   height: 100vh;
   @include mixin.flex(column, center, center, 1rem);
   @include mixin.heading(2.5px);
   background-color: rgb(249, 249, 249);
+
   button {
     padding: 0.8rem 1rem;
-    border:none;
+    border: none;
     border-radius: 4px;
     background-color: rgb(0, 98, 255);
-    &:hover{
+
+    &:hover {
       transform: scale(0.98);
-      cursor:pointer;
+      cursor: pointer;
     }
-    a{
+
+    a {
       color: white;
     }
-    
+
   }
 }
 
 .admin_container {
   @include mixin.grid(1fr 4fr, 2rem);
   background-color: rgb(247, 247, 247);
-  margin-top: 50px;
+  margin-top: 40px;
   > aside {
-    width: 100%;
+    width: 10vw;
     background-color: white;
     padding: 1rem;
     z-index: 10;
     overflow-y: auto;
+
     &::-webkit-scrollbar {
       display: none;
     }
+
     > div {
       margin: 2rem 1rem;
+
       > h5 {
         @include mixin.heading(2px);
         opacity: 0.8;
         margin: 1rem 0;
       }
+
       > ul {
         @include mixin.flex(column, unset, unset, 0.5rem);
         list-style: none;
+
         li {
           padding: 0.5rem 1rem;
           border-radius: 10px;
+
+          a {
+            color: rgba($color: #000000, $alpha: 0.8);
+            @include mixin.flex(row, unset);
+          }
+        }
+      }
+    }
+  }
+}
+
+.side_admin_container {
+  @include mixin.grid(1fr 4fr, 2rem);
+  background-color: rgb(247, 247, 247);
+  > aside {
+    width: 10vw;
+    background-color: white;
+    padding: 1rem;
+    z-index: 10;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > div {
+      margin: 2rem 1rem;
+
+      > h5 {
+        @include mixin.heading(2px);
+        opacity: 0.8;
+        margin: 1rem 0;
+      }
+
+      > ul {
+        @include mixin.flex(column, unset, unset, 0.5rem);
+        list-style: none;
+
+        li {
+          padding: 0.5rem 1rem;
+          border-radius: 10px;
+
           a {
             color: rgba($color: #000000, $alpha: 0.8);
             @include mixin.flex(row, unset);
@@ -88,6 +144,7 @@ a {
 .table {
   border-collapse: collapse;
   width: 100%;
+
   th,
   td {
     padding: 8px;
@@ -117,6 +174,7 @@ a {
         object-fit: contain;
         border-radius: 10px;
       }
+
       a {
         text-decoration: none;
         background-color: rgba(44, 104, 255, 0.455);
@@ -124,55 +182,17 @@ a {
         padding: 0.25rem 0.5rem;
         border-radius: 10px;
       }
+
       button {
         width: 2rem;
         height: 2rem;
-    .admin_container {
-  @include mixin.grid(1fr 4fr, 2rem);
-  background-color: rgb(247, 247, 247);
-  margin-top: 60px; // Adjust this value to match your header height
-
-  > aside {
-    position: fixed; // or sticky
-    top: 60px; // Same as header height
-    left: 0;
-    height: calc(100vh - 60px); // Viewport height minus header height
-    width: calc(100% / 5); // For the 1fr in the 1fr 4fr grid
-    background-color: white;
-    padding: 1rem;
-    z-index: 10;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    > div {
-      margin: 2rem 1rem;
-      > h5 {
-        @include mixin.heading(2px);
-        opacity: 0.8;
-        margin: 1rem 0;
-      }
-      > ul {
-        @include mixin.flex(column, unset, unset, 0.5rem);
-        list-style: none;
-        li {
-          padding: 0.5rem 1rem;
-          border-radius: 10px;
-          a {
-            color: rgba($color: #000000, $alpha: 0.8);
-            @include mixin.flex(row, unset);
-          }
-        }
-      }
-    }
-  }
-}
-    font-size: 1.1rem;
+        font-size: 1.1rem;
         border: none;
         outline: none;
         background-color: transparent;
         cursor: pointer;
         color: rgb(255, 44, 44);
+
         &:hover {
           opacity: 0.6;
         }
@@ -192,6 +212,7 @@ a {
 .table_pagination {
   @include mixin.flex;
   padding: 2rem;
+
   > button {
     padding: 0.5rem 1rem;
     border: none;
@@ -200,6 +221,7 @@ a {
     cursor: pointer;
     background-color: rgba(0, 115, 255);
     color: white;
+
     &:disabled {
       background-color: rgba(0, 115, 255, 0.1);
       cursor: not-allowed;
@@ -242,6 +264,7 @@ a {
   width: 100%;
   height: 100vh;
   @include mixin.flex;
+
   > div {
     @include mixin.square(10rem);
     border-radius: 50%;
