@@ -51,6 +51,10 @@ import CouponGenerator from "./pages/admin/apps/CouponGenerator";
 import Toss from "./pages/admin/apps/Toss";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 
+// Checkout Pages
+import Checkout from "./components/Checkout";
+import CheckoutSuccess from "./components/CheckoutSuccess";
+
 // Status
 import Forbidden403 from "./pages/default/403";
 
@@ -60,6 +64,8 @@ const customerRoutes = [
     {path: "/categories", element: <AllCategories/>},
     {path: "/products/:productID", element: <SingleProduct/>},
     {path: "/categories/:slug", element: <SingleCategory/>},
+    {path: "/checkout", element: <Checkout/>},
+    {path: "/checkout-success", element: <CheckoutSuccess/>},
 ];
 
 const protectedCustomerRoutes = [
@@ -158,6 +164,5 @@ function App() {
         </Provider>
     );
 }
-
 
 export default App;
