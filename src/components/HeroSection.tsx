@@ -14,7 +14,7 @@ const HeroSection: FC = () => {
               The best collection 2025
             </h2>
             <Link
-              to="/products/67e822da6be448e52dfcfd36"
+              to="/products"
               data-test="hero-btn"
               className="inline-block bg-white rounded-md px-6 py-3 hover:bg-blue-500 hover:text-white"
             >

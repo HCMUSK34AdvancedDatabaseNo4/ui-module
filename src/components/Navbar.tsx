@@ -50,10 +50,10 @@ const Navbar: FC = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="border-2 border-blue-500 px-6 py-2 w-full dark:text-white dark:bg-slate-800"
+                  className="border-2 border-blue-500 px-6 py-2 w-full dark:text-white dark:bg-slate-800 rounded-l-lg"
               />
               <div
-                  className="bg-blue-500 text-white text-[26px] grid place-items-center px-4 cursor-pointer"
+                  className="bg-blue-500 text-white text-[26px] grid place-items-center px-4 cursor-pointer rounded-r-lg"
                   onClick={handleSearch}
               >
                 <BsSearch />

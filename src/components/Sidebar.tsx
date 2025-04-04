@@ -156,7 +156,6 @@ const Sidebar = () => {
               }
             : {}
         }>
-      <h2>Logo.</h2>
       <DivOne location={location} />
       <DivTwo location={location} />
       <DivThree location={location} />

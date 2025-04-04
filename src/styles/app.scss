@@ -51,8 +51,8 @@ a {
 
 .admin_container {
   @include mixin.grid(1fr 4fr, 2rem);
- // height: 100vh;
   background-color: rgb(247, 247, 247);
+  margin-top: 50px;
   > aside {
     width: 100%;
     background-color: white;
@@ -84,6 +84,7 @@ a {
     }
   }
 }
+
 .table {
   border-collapse: collapse;
   width: 100%;
@@ -126,7 +127,47 @@ a {
       button {
         width: 2rem;
         height: 2rem;
-        font-size: 1.1rem;
+    .admin_container {
+  @include mixin.grid(1fr 4fr, 2rem);
+  background-color: rgb(247, 247, 247);
+  margin-top: 60px; // Adjust this value to match your header height
+
+  > aside {
+    position: fixed; // or sticky
+    top: 60px; // Same as header height
+    left: 0;
+    height: calc(100vh - 60px); // Viewport height minus header height
+    width: calc(100% / 5); // For the 1fr in the 1fr 4fr grid
+    background-color: white;
+    padding: 1rem;
+    z-index: 10;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    > div {
+      margin: 2rem 1rem;
+      > h5 {
+        @include mixin.heading(2px);
+        opacity: 0.8;
+        margin: 1rem 0;
+      }
+      > ul {
+        @include mixin.flex(column, unset, unset, 0.5rem);
+        list-style: none;
+        li {
+          padding: 0.5rem 1rem;
+          border-radius: 10px;
+          a {
+            color: rgba($color: #000000, $alpha: 0.8);
+            @include mixin.flex(row, unset);
+          }
+        }
+      }
+    }
+  }
+}
+    font-size: 1.1rem;
         border: none;
         outline: none;
         background-color: transparent;

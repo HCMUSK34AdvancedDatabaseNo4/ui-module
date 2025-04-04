@@ -105,9 +105,9 @@ const statusRoutes = [
 
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Navbar/>
-            <main className="min-h-screen">
+            <main className="flex-1">
                 {children}
             </main>
             <Footer/>
@@ -116,9 +116,10 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
             <ScrollToTopButton/>
             <BannerPopup/>
             <Toaster position="bottom-center"/>
-        </>
+        </div>
     );
 };
+
 
 function App() {
     return (

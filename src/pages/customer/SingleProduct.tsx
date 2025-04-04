@@ -59,15 +59,10 @@ const SingleProduct: FC = () => {
         })
         .catch((_) => {
           fetch(
-            `https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=10&Category=${cat}`
+            `https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=8&Category=${cat}`
           )
             .then((res) => res.json())
-            .then((data) => {
-              console.log(data);
-              const _products: Product[] = data.response.recommendations;
-              console.log(_products);
-              setSimilar(_products);
-            });
+            .then((data) => setSimilar(data));
         });
     };
     if (sCategory && sCategory !== "") fetchPreferences(sCategory);

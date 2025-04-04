@@ -12,6 +12,7 @@ const CustomPopup: FC = () => {
   const dispatch = useAppDispatch();
   const [isVisible, setVisible] = useState(false);
   const username = useAppSelector((state) => state.authReducer.username);
+  const isAdmin = useAppSelector((state) => state.authReducer.isLoggedIn && state.authReducer.role === 'ADMIN');
 
   const handlePopup = () => {
     setVisible((v) => !v);
@@ -65,7 +66,7 @@ const CustomPopup: FC = () => {
                 </Link>
               </td>
             </tr>
-            <tr>
+            {isAdmin && (<tr>
               <td className="text-center">
                 <MdOutlineContactPage/>
               </td>
@@ -76,7 +77,7 @@ const CustomPopup: FC = () => {
                   Admin
                 </Link>
               </td>
-            </tr>
+            </tr>)}
             <tr>
               <td className="text-center">
                 <MdOutlineLogout/>
