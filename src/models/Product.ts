@@ -7,4 +7,6 @@ export interface Product {
   description?: string;
   categories: string[];
   discountPercentage?: number;
+  sellerId?: string;
+  active?: boolean;
 }

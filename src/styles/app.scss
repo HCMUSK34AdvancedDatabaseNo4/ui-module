@@ -63,7 +63,7 @@ a {
   background-color: rgb(247, 247, 247);
   margin-top: 40px;
   > aside {
-    width: 10vw;
+    width: 20vw;
     background-color: white;
     padding: 1rem;
     z-index: 10;
@@ -104,7 +104,7 @@ a {
   @include mixin.grid(1fr 4fr, 2rem);
   background-color: rgb(247, 247, 247);
   > aside {
-    width: 10vw;
+    width: 20vw;
     background-color: white;
     padding: 1rem;
     z-index: 10;

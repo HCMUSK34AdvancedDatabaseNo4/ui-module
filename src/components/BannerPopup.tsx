@@ -4,7 +4,7 @@ import { updateBanner } from "../redux/features/homeSlice";
 
 const BannerPopup: FC = () => {
   const show = useAppSelector((state) => state.homeReducer.isBannerVisible
-      && !(state.authReducer.isLoggedIn && state.authReducer.role === 'ADMIN')); // Admin not show banner
+      && !(state.authReducer.isLoggedIn && state.authReducer.role === 'SELLER')); // Admin not show banner
   const dispatch = useAppDispatch();
 
   if (!show) return null;

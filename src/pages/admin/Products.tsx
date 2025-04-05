@@ -110,10 +110,23 @@ const Products = () => {
   );
 
   return (
-    <div className="admin_container">
-      <Sidebar />
-      <main>{Table()}</main>
-    </div>
+      <div className="admin_container">
+        <Sidebar />
+        <main>
+          {/* Add this div for the header section */}
+          <div className="flex justify-between items-center mb-4 p-4">
+            <h1 className="text-2xl font-semibold">Products</h1>
+            <Link
+                to="/admin/products/new"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+            >
+              <span>+</span>
+              <span>Add Product</span>
+            </Link>
+          </div>
+          {Table()}
+        </main>
+      </div>
   );
 };
 export default Products;

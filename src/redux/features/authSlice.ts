@@ -34,19 +34,19 @@ export const authSlice = createSlice({
                     modalOpen: false,
                     isLoggedIn: true,
                 };
-            } else if (action.payload.username === "admin" &&
-                action.payload.password === "admin") {
-                localStorage.setItem("username", "admin");
-                localStorage.setItem("role", "ADMIN");
+            } else if (action.payload.username === "seller" &&
+                action.payload.password === "seller") {
+                localStorage.setItem("username", "seller");
+                localStorage.setItem("role", "SELLER");
                 return {
                     ...state,
-                    username: "admin",
-                    role: "ADMIN",
+                    username: "seller",
+                    role: "SELLER",
                     modalOpen: false,
                     isLoggedIn: true,
                 };
             } else {
-                return state;
+                throw "Invalid username or password";
             }
         },
         doLogout: (state) => {

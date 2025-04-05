@@ -5,6 +5,7 @@ import { FaUnlock } from "react-icons/fa";
 import { RiLockPasswordFill, RiUser3Fill } from "react-icons/ri";
 import { GiArchiveRegister } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
+import toast from "react-hot-toast";
 
 const LoginModal: FC = () => {
   const [clicked, setClicked] = useState(false);
@@ -12,12 +13,14 @@ const LoginModal: FC = () => {
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.authReducer.modalOpen);
-
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(doLogin({ username, password }));
+    try {
+      dispatch(doLogin({username, password}));
+    } catch (e) {
+      toast.error("Invalid username or password");
+    }
   };
-
   if (open) {
     return (
       <div className="bg-[#0000007d] w-full min-h-screen fixed inset-0 z-30 flex items-center justify-center font-karla">

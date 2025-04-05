@@ -12,7 +12,7 @@ const CustomPopup: FC = () => {
   const dispatch = useAppDispatch();
   const [isVisible, setVisible] = useState(false);
   const username = useAppSelector((state) => state.authReducer.username);
-  const isAdmin = useAppSelector((state) => state.authReducer.isLoggedIn && state.authReducer.role === 'ADMIN');
+  const isSeller = useAppSelector((state) => state.authReducer.isLoggedIn && state.authReducer.role === 'SELLER');
 
   const handlePopup = () => {
     setVisible((v) => !v);
@@ -66,7 +66,7 @@ const CustomPopup: FC = () => {
                 </Link>
               </td>
             </tr>
-            {isAdmin && (<tr>
+            {isSeller && (<tr>
               <td className="text-center">
                 <MdOutlineContactPage/>
               </td>
@@ -74,7 +74,7 @@ const CustomPopup: FC = () => {
                   className="hover:underline cursor-pointer text-lg pl-2"
               >
                 <Link to="/admin" onClick={hidePopup}>
-                  Admin
+                  Seller
                 </Link>
               </td>
             </tr>)}

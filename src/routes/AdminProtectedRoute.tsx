@@ -3,8 +3,8 @@ import {Navigate, Outlet} from "react-router-dom";
 import {useAppSelector} from "../redux/hooks.ts";
 
 const AdminProtectedRoute: FC = () => {
-  const isLoggedInAdmin = useAppSelector((state) => state.authReducer.isLoggedIn && state.authReducer.role === 'ADMIN');
-  return isLoggedInAdmin ? <Outlet /> : <Navigate to="/403" />;
+  const isSeller = useAppSelector((state) => state.authReducer.isLoggedIn && state.authReducer.role === 'SELLER');
+  return isSeller ? <Outlet /> : <Navigate to="/403" />;
 };
 
 export default AdminProtectedRoute;
