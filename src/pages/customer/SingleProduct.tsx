@@ -14,193 +14,187 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { addToWishlist } from "../../redux/features/productSlice.ts";
 
 const SingleProduct: FC = () => {
-  const dispatch = useAppDispatch();
-  const { productID } = useParams();
-  const [product, setProduct] = useState<Product>();
-  const [imgs, setImgs] = useState<string[]>();
-  const [selectedImg, setSelectedImg] = useState<string>();
-  const [sCategory, setScategory] = useState<string>();
-  const [similar, setSimilar] = useState<Product[]>([]);
-  const { requireAuth } = useAuth();
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, [productID]);
-  useEffect(() => {
-    const fetchProductDetails = () => {
-      fetch(`https://www.productservice.somee.com/api/Product/${productID}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const { images, categories } = data;
-          setProduct(data);
-          setImgs(images);
-          setScategory(categories[0]);
-          setSelectedImg(images[0]);
+    const dispatch = useAppDispatch();
+    const { productID } = useParams();
+    const [product, setProduct] = useState<Product>();
+    const [imgs, setImgs] = useState<string[]>();
+    const [selectedImg, setSelectedImg] = useState<string>();
+    const [sCategory, setScategory] = useState<string>();
+    const [similar, setSimilar] = useState<Product[]>([]);
+    const { requireAuth } = useAuth();
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }, [productID]);
+
+    useEffect(() => {
+        const fetchProductDetails = () => {
+            fetch(`https://www.productservice.somee.com/api/Product/${productID}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const { images, categories } = data;
+                    setProduct(data);
+                    setImgs(images);
+                    setScategory(categories[0]);
+                    setSelectedImg(images[0]);
+                });
+        };
+        fetchProductDetails();
+    }, [productID]);
+
+    useEffect(() => {
+        const fetchPreferences = (cat: string) => {
+            fetch(`http://localhost:3000/api/recommendations/product/${productID}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const _products: Product[] = data.response.recommendations;
+                    setSimilar(_products);
+                })
+                .catch((_) => {
+                    fetch(
+                        `https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=8&Category=${cat}`
+                    )
+                        .then((res) => res.json())
+                        .then((data) => setSimilar(data));
+                });
+        };
+        if (sCategory && sCategory !== "") fetchPreferences(sCategory);
+    }, [productID, sCategory]);
+
+    const addCart = () => {
+        requireAuth(() => {
+            if (product)
+                dispatch(
+                    addToCart({
+                        id: product.id,
+                        price: product.price,
+                        productName: product.productName,
+                        categories: product.categories,
+                        images: product.images,
+                        supplierCode: product.supplierCode,
+                        thumbnail: product.images[0],
+                    })
+                );
+            toast.success("item added to cart successfully", { duration: 3000 });
         });
     };
-    fetchProductDetails();
-  }, [productID]);
 
-  useEffect(() => {
-    const fetchPreferences = (cat: string) => {
-      fetch(`http://localhost:3000/api/recommendations/product/${productID}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          const _products: Product[] = data.response.recommendations;
-          console.log(_products);
-          setSimilar(_products);
-        })
-        .catch((_) => {
-          fetch(
-            `https://www.productservice.somee.com/api/Product/user?PageNumber=1&Size=8&Category=${cat}`
-          )
-            .then((res) => res.json())
-            .then((data) => setSimilar(data));
+    const buyNow = () => {
+        requireAuth(() => {
+            if (product)
+                dispatch(
+                    addToCart({
+                        id: product.id,
+                        price: product.price,
+                        productName: product.productName,
+                        categories: product.categories,
+                        thumbnail: product.images[0],
+                        images: product.images,
+                        supplierCode: product.supplierCode,
+                        discountPercentage: product.discountPercentage,
+                    })
+                );
+            dispatch(setCartState(true));
         });
     };
-    if (sCategory && sCategory !== "") fetchPreferences(sCategory);
-  }, [productID, sCategory]);
 
-  const addCart = () => {
-    requireAuth(() => {
-      if (product)
-        dispatch(
-          addToCart({
-            id: product.id,
-            price: product.price,
-            productName: product.productName,
-            categories: product.categories,
-            images: product.images,
-            supplierCode: product.supplierCode,
-            thumbnail: product.images[0],
-          })
-        );
-      toast.success("item added to cart successfully", {
-        duration: 3000,
-      });
-    });
-  };
-
-  const buyNow = () => {
-    requireAuth(() => {
-      if (product)
-        dispatch(
-          addToCart({
-            id: product.id,
-            price: product.price,
-            productName: product.productName,
-            categories: product.categories,
-            thumbnail: product.images[0],
-            images: product.images,
-            supplierCode: product.supplierCode,
-            discountPercentage: product.discountPercentage,
-          })
-        );
-      dispatch(setCartState(true));
-    });
-  };
-
-  const addWishlist = () => {
-    requireAuth(() => {
-      if (product) {
-        dispatch(addToWishlist(product));
-        toast.success("item added to your wishlist", {
-          duration: 3000,
+    const addWishlist = () => {
+        requireAuth(() => {
+            if (product) {
+                dispatch(addToWishlist(product));
+                toast.success("item added to your wishlist", { duration: 3000 });
+            }
         });
-      }
-    });
-  };
+    };
 
-  return (
-    <div className="container mx-auto pt-8 dark:text-white">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-4 font-karla">
-        <div className="space-y-2">
-          <img src={selectedImg} alt="selected" className="h-80" />
-          <div className="flex space-x-1 items-center">
-            {imgs &&
-              imgs.map((_img) => (
-                <img
-                  src={_img}
-                  key={_img}
-                  alt="thumb"
-                  className={`w-12 cursor-pointer hover:border-2 hover:border-black ${
-                    _img === selectedImg ? "border-2 border-black" : ""
-                  }`}
-                  onClick={() => setSelectedImg(_img)}
-                />
-              ))}
-          </div>
+    return (
+        <div className="container mx-auto pt-8 dark:text-white">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 font-karla">
+                {/* Image gallery */}
+                <div className="space-y-4">
+                    <img src={selectedImg} alt="selected" className="h-80 w-full object-contain rounded-md border" />
+                    <div className="flex flex-wrap gap-2">
+                        {imgs?.map((_img) => (
+                            <img
+                                src={_img}
+                                key={_img}
+                                alt="thumb"
+                                className={`w-16 h-16 object-contain rounded cursor-pointer border ${_img === selectedImg ? "border-blue-500" : "hover:border-gray-400"}`}
+                                onClick={() => setSelectedImg(_img)}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Product info */}
+                <div className="px-2">
+                    <h2 className="text-3xl font-bold mb-2">{product?.productName}</h2>
+                    <div className="mb-4">
+                        {product?.discountPercentage && (
+                            <PriceSection discountPercentage={product.discountPercentage} price={product.price} />
+                        )}
+                    </div>
+                    <table className="w-full text-sm border border-gray-200 rounded overflow-hidden">
+                        <tbody>
+                        <tr className="border-b">
+                            <td className="px-3 py-2 font-semibold bg-gray-50 w-32">Brand</td>
+                            <td className="px-3 py-2">{product?.supplierCode}</td>
+                        </tr>
+                        <tr className="border-b">
+                            <td className="px-3 py-2 font-semibold bg-gray-50">Category</td>
+                            <td className="px-3 py-2">{product?.categories.join(", ")}</td>
+                        </tr>
+                        <tr>
+                            <td className="px-3 py-2 font-semibold bg-gray-50">Stock</td>
+                            <td className="px-3 py-2">{product?.productInventoryId}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div className="mt-4">
+                        <h3 className="font-semibold mb-1">About the product</h3>
+                        <p className="leading-relaxed text-gray-700 dark:text-gray-300">
+                            {product?.description}
+                        </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center mt-6 gap-2">
+                        <button
+                            type="button"
+                            className="flex items-center gap-2 hover:bg-pink-700 text-white py-2 px-4 rounded bg-pink-500"
+                            onClick={addCart}
+                            title="ADD TO CART"
+                        >
+                            <AiOutlineShoppingCart /> Add to Cart
+                        </button>
+                        <button
+                            type="button"
+                            className="flex items-center gap-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                            onClick={buyNow}
+                            title="BUY NOW"
+                        >
+                            <FaHandHoldingDollar /> Buy Now
+                        </button>
+                        <button
+                            type="button"
+                            className="flex items-center gap-2 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700"
+                            onClick={addWishlist}
+                            title="ADD TO WISHLIST"
+                        >
+                            <MdFavoriteBorder /> Wishlist
+                        </button>
+                    </div>
+                </div>
+
+                {/* Reviews */}
+                {product && <Reviews id={product.id} />}
+            </div>
+
+            <hr className="mt-6" />
+            <ProductList title="Similar Products" products={similar} />
+            <br />
         </div>
-        <div className="px-2">
-          <h2 className="text-2xl">{product?.productName}</h2>
-          <div className="mt-1">
-            {product?.discountPercentage && (
-              <PriceSection
-                discountPercentage={product?.discountPercentage}
-                price={product?.price}
-              />
-            )}
-          </div>
-          <table className="mt-2">
-            <tbody>
-              <tr>
-                <td className="pr-2 font-bold">Brand</td>
-                <td>{product?.supplierCode}</td>
-              </tr>
-              <tr>
-                <td className="pr-2 font-bold">Category</td>
-                <td>{product?.categories.join(", ")}</td>
-              </tr>
-              <tr>
-                <td className="pr-2 font-bold">Stock</td>
-                <td>{999}</td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="mt-2">
-            <h2 className="font-bold">About the product</h2>
-            <p className="leading-5">
-              {product?.description}
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center mt-4 mb-2">
-            <button
-              type="button"
-              className="flex space-x-1 items-center mr-2 mb-2 hover:bg-pink-700 text-white py-2 px-4 rounded bg-pink-500"
-              onClick={addCart}
-              title="ADD TO CART"
-            >
-              <AiOutlineShoppingCart />
-            </button>
-            <button
-              type="button"
-              className="flex space-x-1 items-center mr-2 mb-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-              onClick={buyNow}
-              title="BUY NOW"
-            >
-              <FaHandHoldingDollar />
-            </button>
-            <button
-              type="button"
-              className="flex space-x-1 items-center mb-2 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-700"
-              onClick={addWishlist}
-              title="ADD TO WISHLIST"
-            >
-              <MdFavoriteBorder />
-            </button>
-          </div>
-        </div>
-        {product && <Reviews id={product?.id} />}
-      </div>
-      <hr className="mt-4" />
-      <ProductList title="Similar Products" products={similar} />
-      <br />
-    </div>
-  );
+    );
 };
 
 export default SingleProduct;

@@ -37,6 +37,7 @@ import Transaction from "./pages/admin/Transaction";
 
 // Admin Management Pages
 import NewProduct from "./pages/admin/management/NewProduct";
+import EditProduct from "./pages/admin/management/EditProduct";
 import ProductManagement from "./pages/admin/management/ProductManagement";
 import TransactionManagement from "./pages/admin/management/TransactionManagement";
 
@@ -65,7 +66,7 @@ const customerRoutes = [
     {path: "/products/:productID", element: <SingleProduct/>},
     {path: "/categories/:slug", element: <SingleCategory/>},
     {path: "/checkout", element: <Checkout/>},
-    {path: "/checkout-success", element: <CheckoutSuccess/>},
+    {path: "/checkout-success", element: <CheckoutSuccess/>}
 ];
 
 const protectedCustomerRoutes = [
@@ -85,6 +86,7 @@ const adminManagementRoutes = [
     {path: "/admin/products/new", element: <NewProduct/>},
     {path: "/admin/products/manage", element: <ProductManagement/>},
     {path: "/admin/transactions/manage", element: <TransactionManagement/>},
+    {path: "/admin/products/:id", element: <EditProduct/>} // Added edit route here
 ];
 
 const chartRoutes = [
@@ -119,7 +121,6 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
         </div>
     );
 };
-
 
 function App() {
     return (

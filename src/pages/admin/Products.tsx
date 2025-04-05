@@ -1,132 +1,126 @@
-import { ReactElement, useCallback, useState } from "react";
-import Sidebar from "../../components/Sidebar.tsx";
-import TableHOC from "../../components/TableHOC.tsx";
-import { Column } from "react-table";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import Sidebar from "../../components/Sidebar";
 
-interface DataType {
-  photo: ReactElement;
-  name: string;
-  price: number;
-  stock: number;
-  action: ReactElement;
+interface Product {
+    id: string;
+    productName: string;
+    price: number;
+    productInventoryId: number;
+    images: string[];
 }
 
-const columns: Column<DataType>[] = [
-  {
-    Header: "Photo",
-    accessor: "photo",
-  },
-  {
-    Header: "Name",
-    accessor: "name",
-  },
-  {
-    Header: "Price",
-    accessor: "price",
-  },
-  {
-    Header: "Stock",
-    accessor: "stock",
-  },
-  {
-    Header: "Action",
-    accessor: "action",
-  },
-];
-
-const img =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
-
-const img2 = "https://m.media-amazon.com/images/I/514T0SvwkHL._SL1500_.jpg";
-
-const arr: DataType[] = [
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air Jordan Cook Nigga 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air Jordan Cook Nigga 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img} alt="Shoes" />,
-    name: "Puma Shoes Air Jordan Cook Nigga 2023",
-    price: 690,
-    stock: 3,
-    action: <Link to="/admin/products/sajknaskd">Manage</Link>,
-  },
-
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-  {
-    photo: <img src={img2} alt="Shoes" />,
-    name: "Macbook",
-    price: 232223,
-    stock: 213,
-    action: <Link to="/admin/products/sdaskdnkasjdn">Manage</Link>,
-  },
-];
-
 const Products = () => {
-  const [data] = useState<DataType[]>(arr);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const size = 10;
 
-  const Table = useCallback(
-    TableHOC<DataType>(
-      columns,
-      data,
-      "dashboard_product_box",
-      "Products",
-      true
-    ),
-    []
-  );
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(
+                    `https://productservice.somee.com/api/Product/user?pageNumber=${currentPage}&size=${size}`
+                );
+                setProducts(res.data);
+                setHasMore(res.data.length === size);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+            }
+        };
 
-  return (
-      <div className="admin_container">
-        <Sidebar />
-        <main>
-          {/* Add this div for the header section */}
-          <div className="flex justify-between items-center mb-4 p-4">
-            <h1 className="text-2xl font-semibold">Products</h1>
-            <Link
-                to="/admin/products/new"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-            >
-              <span>+</span>
-              <span>Add Product</span>
-            </Link>
-          </div>
-          {Table()}
-        </main>
-      </div>
-  );
+        fetchData();
+    }, [currentPage]);
+
+    const goToNextPage = () => {
+        if (hasMore) setCurrentPage((prev) => prev + 1);
+    };
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    };
+
+    return (
+        <div className="admin_container">
+            <Sidebar />
+            <main className="p-6 w-full">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-semibold">Products - Page {currentPage}</h2>
+                    <Link
+                        to="/admin/products/new"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        + Add Product
+                    </Link>
+                </div>
+
+                <div className="overflow-x-auto w-full">
+                    <table className="min-w-full border border-gray-200 rounded">
+                        <thead className="bg-gray-100">
+                        <tr>
+                            <th className="p-3 text-left">Photo</th>
+                            <th className="p-3 text-left">Name</th>
+                            <th className="p-3 text-left">Price</th>
+                            <th className="p-3 text-left">Stock</th>
+                            <th className="p-3 text-left">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {products.map((product) => (
+                            <tr key={product.id} className="border-t">
+                                <td className="p-3">
+                                    <img
+                                        src={product.images[0]}
+                                        alt={product.productName}
+                                        className="w-16 h-16 object-contain rounded"
+                                        onError={(e) => (e.currentTarget.src = "/no-image.png")}
+                                    />
+                                </td>
+                                <td className="p-3">{product.productName}</td>
+                                <td className="p-3">{product.price}</td>
+                                <td className="p-3">{product.productInventoryId}</td>
+                                <td className="p-3">
+                                    <Link
+                                        to={`/admin/products/${product.id}`}
+                                        className="bg-blue-100 text-blue-600 px-3 py-1 rounded hover:bg-blue-200"
+                                    >
+                                        Manage
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
+                        {products.length === 0 && (
+                            <tr>
+                                <td colSpan={5} className="text-center text-gray-500 py-4">
+                                    No products found.
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="flex justify-center items-center gap-4 mt-6">
+                    <button
+                        onClick={goToPrevPage}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                    >
+                        Previous
+                    </button>
+                    <span className="font-medium">Page {currentPage}</span>
+                    <button
+                        onClick={goToNextPage}
+                        disabled={!hasMore}
+                        className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
+            </main>
+        </div>
+    );
 };
+
 export default Products;
