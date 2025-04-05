@@ -81,14 +81,25 @@ const NewProduct = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      // Add your API call here to save the product
-      console.log('Product to submit:', product);
-      // Reset form after successful submission
-      resetForm();
-    } catch (error) {
-      console.error('Error submitting product:', error);
+
+    const response = await fetch('https://www.productservice.somee.com/api/Product', {
+      method: 'POST',
+      headers: {
+        'accept': '*/*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product)
+    });
+
+    if (!response.ok) {
+      toast.error('Failed to create product');
     }
+
+    const data = await response.json();
+    console.log('Product created:', data);
+    toast.success('Successfully!');
+
+    resetForm();
   };
 
   const resetForm = () => {
