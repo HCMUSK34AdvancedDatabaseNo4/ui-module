@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { emptyCart } from "../redux/features/cartSlice";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 const Checkout = () => {
     const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ const Checkout = () => {
         fullName: "",
         address: "",
         district: "",
-        paymentMethod: "COD", // ✅ mặc định là COD
+        paymentMethod: "COD",
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,83 +23,105 @@ const Checkout = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const calculateTotal = () => {
-        return items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
-    };
+    const calculateTotal = () =>
+        items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(emptyCart());
-        toast.success("Payment successful!");
-        navigate("/checkout-success");
+
+        const now = new Date().toISOString();
+        const orderItems = items.map((item) => ({
+            Id: uuidv4(),
+            OrderItemId: uuidv4(),
+            UserId: "123",
+            ProductId: item.id,
+            Quantity: item.quantity,
+            Price: item.price,
+            Subtotal: item.quantity * item.price,
+            TotalPrice: item.quantity * item.price,
+            CreatedDate: now,
+            UpdatedDate: now,
+            VoucherId: null,
+            ShipmentStatus: "Pending",
+            PaymentStatus: "Unpaid",
+        }));
+
+        if (orderItems.length === 0) {
+            toast.error("Your cart is empty.");
+            return;
+        }
+
+        try {
+            const res = await fetch("http://localhost:8080/api/Order/PlaceOrder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(orderItems),
+            });
+
+            if (!res.ok) throw new Error(await res.text());
+
+            // Save latest order
+            localStorage.setItem("lastOrder", JSON.stringify(orderItems));
+
+            // Append to orderHistory
+            const prev = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+            prev.push(orderItems);
+            localStorage.setItem("orderHistory", JSON.stringify(prev));
+
+            toast.success("✅ Order placed successfully!");
+            dispatch(emptyCart());
+            navigate("/checkout-success");
+        } catch (error) {
+            console.error("❌ Error:", error);
+            toast.error("Failed to place order. Please try again.");
+        }
     };
 
     return (
-        <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Checkout</h2>
+        <div className="max-w-xl mx-auto p-4">
+            <h2 className="text-2xl font-bold mb-4">Shipping Information</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input
-                    type="text"
                     name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
                     placeholder="Full Name"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    className="w-full border px-4 py-2 rounded"
                 />
                 <input
-                    type="text"
                     name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
                     placeholder="Phone Number"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    className="w-full border px-4 py-2 rounded"
                 />
                 <input
-                    type="text"
                     name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
                     placeholder="Address"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full border px-4 py-2 rounded"
                 />
                 <input
-                    type="text"
                     name="district"
-                    value={formData.district}
-                    onChange={handleInputChange}
                     placeholder="District"
                     required
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.district}
+                    onChange={handleInputChange}
+                    className="w-full border px-4 py-2 rounded"
                 />
 
-                <div className="space-y-2">
-                    <label className="font-medium">Payment Method</label>
-                    <div className="flex items-center space-x-4">
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="COD"
-                                checked={formData.paymentMethod === "COD"}
-                                onChange={handleInputChange}
-                                className="mr-2"
-                            />
-                            COD (Cash on Delivery)
-                        </label>
-                    </div>
-                </div>
-
-                <div className="text-lg font-medium text-right">
-                    Total: <span className="text-blue-600 font-bold">${calculateTotal()}</span>
+                <div className="text-right font-semibold">
+                    Total: {calculateTotal()} USD
                 </div>
                 <button
                     type="submit"
-                    className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
                 >
-                    Confirm Order
+                    Place Order
                 </button>
             </form>
         </div>

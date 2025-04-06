@@ -27,6 +27,7 @@ import AllCategories from "./pages/customer/AllCategories";
 import SingleCategory from "./pages/customer/SingleCategory";
 import Wishlist from "./pages/customer/Wishlist";
 import Profile from "./pages/customer/Profile";
+import OrderHistory from "./components/OrderHistory";
 
 // Admin Pages
 import Landing from "./pages/customer/Landing";
@@ -66,7 +67,8 @@ const customerRoutes = [
     {path: "/products/:productID", element: <SingleProduct/>},
     {path: "/categories/:slug", element: <SingleCategory/>},
     {path: "/checkout", element: <Checkout/>},
-    {path: "/checkout-success", element: <CheckoutSuccess/>}
+    {path: "/checkout-success", element: <CheckoutSuccess/>},
+    {path: "/orders", element: <OrderHistory/>}
 ];
 
 const protectedCustomerRoutes = [
