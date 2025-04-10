@@ -29,7 +29,7 @@ const EditProduct = () => {
                 setProduct(res.data);
             } catch (err) {
                 console.error("Failed to fetch product", err);
-                alert("Không lấy được thông tin sản phẩm!");
+                alert("Unable to get product information!");
             }
         };
 
@@ -48,35 +48,35 @@ const EditProduct = () => {
         e.preventDefault();
         try {
             await axios.put(`https://productservice.somee.com/api/Product/${id}`, product);
-            alert("Cập nhật sản phẩm thành công!");
+            alert("Product update successful!");
             navigate("/admin/products");
         } catch (err) {
             console.error("Failed to update product", err);
-            alert("Cập nhật thất bại. Vui lòng thử lại!");
+            alert("Update failed. Please try again!");
         }
     };
 
     const handleDelete = async () => {
-        const confirmDelete = confirm("Bạn có chắc chắn muốn xoá sản phẩm này không?");
+        const confirmDelete = confirm("Are you sure you want to delete this product?");
         if (!confirmDelete) return;
 
         try {
             await axios.delete(`https://productservice.somee.com/api/Product/${id}`);
-            alert("Đã xoá sản phẩm thành công!");
+            alert("Product deleted successfully!");
             navigate("/admin/products");
         } catch (err) {
             console.error("Failed to delete product", err);
-            alert("Xoá sản phẩm thất bại!");
+            alert("Delete product failed!");
         }
     };
 
     return (
-        <div className="admin_container px-8 py-6">
+        <div className="flex px-8 py-6">
             <main className="w-full max-w-3xl mx-auto p-10 bg-white shadow-md rounded-md">
-                <h2 className="text-3xl font-bold mb-6 text-center">Chỉnh sửa sản phẩm</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center">Edit product</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium mb-1">Tên sản phẩm</label>
+                        <label className="block text-sm font-medium mb-1">Product name</label>
                         <input
                             type="text"
                             name="productName"
@@ -88,31 +88,30 @@ const EditProduct = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Giá</label>
+                        <label className="block text-sm font-medium mb-1">Price</label>
                         <input
                             type="number"
                             name="price"
                             value={product.price}
                             onChange={handleChange}
                             className="w-full p-2 border rounded focus:outline-blue-500"
-                            placeholder="Giá"
+                            placeholder="Price"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium mb-1">Số lượng tồn</label>
+                        <label className="block text-sm font-medium mb-1">Inventory quantity</label>
                         <input
                             type="number"
                             name="productInventoryId"
                             value={product.productInventoryId}
                             onChange={handleChange}
                             className="w-full p-2 border rounded focus:outline-blue-500"
-                            placeholder="Tồn kho"
+                            placeholder="Inventory"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Hình ảnh</label>
+                        <label className="block text-sm font-medium mb-1">Image</label>
                         <input
                             type="text"
                             name="images"
@@ -121,7 +120,7 @@ const EditProduct = () => {
                                 setProduct(prev => ({ ...prev, images: [e.target.value] }))
                             }
                             className="w-full p-2 border rounded focus:outline-blue-500"
-                            placeholder="URL hình ảnh"
+                            placeholder="URL image"
                         />
                     </div>
 
@@ -141,14 +140,14 @@ const EditProduct = () => {
                             type="submit"
                             className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
                         >
-                            Lưu
+                            Save
                         </button>
                         <button
                             type="button"
                             onClick={handleDelete}
                             className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
                         >
-                            Xoá
+                            Delete
                         </button>
                     </div>
                 </form>
